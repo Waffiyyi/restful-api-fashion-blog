@@ -9,4 +9,5 @@ public class CommentDTO {
     private Long id;
     private String text;
     private Long design;
+    private Long commenterId;
 }

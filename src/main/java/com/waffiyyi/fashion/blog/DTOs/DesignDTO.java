@@ -10,6 +10,7 @@ public class DesignDTO {
     private String name;
     private String description;
     private Long category;
-    private int likesCount;
+    private Long likesCount;
+    private Long ownerId;
 }
 

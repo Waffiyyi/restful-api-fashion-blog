@@ -1,8 +1,13 @@
 package com.waffiyyi.fashion.blog.service.serviceImpl;
 
 import com.waffiyyi.fashion.blog.DTOs.AuthResponse;
+import com.waffiyyi.fashion.blog.DTOs.DesignDTO;
 import com.waffiyyi.fashion.blog.DTOs.LoginDTO;
+import com.waffiyyi.fashion.blog.DTOs.UserDTO;
+import com.waffiyyi.fashion.blog.entities.Category;
+import com.waffiyyi.fashion.blog.entities.Design;
 import com.waffiyyi.fashion.blog.entities.User;
+import com.waffiyyi.fashion.blog.repositories.DesignRepository;
 import com.waffiyyi.fashion.blog.repositories.UserRepository;
 import com.waffiyyi.fashion.blog.config.JwtProvider;
 import com.waffiyyi.fashion.blog.exception.BadRequestException;
@@ -10,6 +15,7 @@ import com.waffiyyi.fashion.blog.exception.UserNotFoundException;
 import com.waffiyyi.fashion.blog.service.UserService;
 import com.waffiyyi.fashion.blog.validations.EmailValidator;
 import com.waffiyyi.fashion.blog.validations.PasswordValidator;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +28,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +40,8 @@ public class UserServiceImpl implements UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
   private final JwtProvider jwtProvider;
-
   private final CustomUserDetailsService customUserDetailsService;
+  private final DesignRepository designRepository;
 
 
   @Override
@@ -70,7 +80,6 @@ public class UserServiceImpl implements UserService {
     AuthResponse response = AuthResponse.builder()
                                .jwt(jwt)
                                .message("Register success")
-                               //                                 .role(savedUser.getRole())
                                .build();
 
     return new ResponseEntity<>(response, HttpStatus.CREATED);
@@ -94,7 +103,6 @@ public class UserServiceImpl implements UserService {
     AuthResponse response = AuthResponse.builder()
                                .jwt(jwt)
                                .message("Login success")
-                               //                                 .role(USER_ROLE.valueOf(role))
                                .build();
     return new ResponseEntity<>(response, HttpStatus.OK);
   }
@@ -108,7 +116,6 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-
   public User findUserByEmail(String email) {
     User user = userRepository.findByEmail(email);
 
@@ -116,6 +123,33 @@ public class UserServiceImpl implements UserService {
       throw new UserNotFoundException("User not found", HttpStatus.NOT_FOUND);
     }
     return user;
+  }
+
+  @Override
+  @Transactional
+  public String followUser(User user, Long followerId) {
+
+
+    User follower = userRepository.findById(followerId)
+                       .orElseThrow(() -> new UserNotFoundException("Follower not found",
+                                                                    HttpStatus.NOT_FOUND));
+
+    user.getFollowers().add(follower);
+    userRepository.save(user);
+    return "Successfully followed user";
+  }
+
+
+  @Override
+  public Set<UserDTO> viewFollowers(User user) {
+    return user.getFollowers().stream()
+              .map(follower -> new UserDTO(
+                 follower.getId(),
+                 follower.getFirstName(),
+                 follower.getLastName(),
+                 follower.getProfilePicture()
+              ))
+              .collect(Collectors.toSet());
   }
 
   private Authentication authenticate(String username, String password) {
@@ -129,5 +163,45 @@ public class UserServiceImpl implements UserService {
     }
     return new UsernamePasswordAuthenticationToken(userDetails, null,
                                                    userDetails.getAuthorities());
+  }
+
+  @Override
+  public List<DesignDTO> getRecommendations(User user) {
+    Set<Category> likedCategories = user.getLikedDesigns().stream()
+                                       .map(Design::getCategory)
+                                       .collect(Collectors.toSet());
+    return designRepository.findTop10ByCategoryInOrderByLikesCountDesc(likedCategories)
+              .stream()
+              .map(this::convertToDto)
+              .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<DesignDTO> getPopularDesigns() {
+    return designRepository.findTop10ByOrderByLikesCountDesc()
+              .stream()
+              .map(this::convertToDto)
+              .collect(Collectors.toList());
+  }
+
+  @Override
+  public List<DesignDTO> getTrendingDesigns() {
+    LocalDateTime oneWeekAgo = LocalDateTime.now().minusDays(7);
+    return designRepository.findTrendingDesigns(oneWeekAgo)
+              .stream()
+              .map(this::convertToDto)
+              .collect(Collectors.toList());
+  }
+
+
+  private DesignDTO convertToDto(Design design) {
+    DesignDTO dto = new DesignDTO();
+    dto.setId(design.getId());
+    dto.setName(design.getName());
+    dto.setDescription(design.getDescription());
+    dto.setCategory(design.getCategory().getId());
+    dto.setLikesCount(design.getLikesCount());
+    dto.setOwnerId(design.getDesignOwner().getId());
+    return dto;
   }
 }
