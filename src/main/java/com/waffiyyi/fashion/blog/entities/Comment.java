@@ -18,6 +18,6 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "design_id")
     private Design design;
-    @OneToOne
+    @ManyToOne
     private User commenter;
 }

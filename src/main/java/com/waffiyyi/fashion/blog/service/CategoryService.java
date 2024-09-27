@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface CategoryService {
   CategoryDTO saveCategory(CategoryDTO categoryDTO, User user);
+  CategoryDTO updateCategory(CategoryDTO categoryDTO,Long categoryId,  User user);
 
   CategoryDTO findCategoryById(Long categoryId);
   List<CategoryDTO> getAllCategory();

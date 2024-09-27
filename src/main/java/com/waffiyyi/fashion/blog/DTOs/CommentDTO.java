@@ -8,6 +8,7 @@ public class CommentDTO {
     @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long id;
     private String text;
-    private Long design;
+    private Long designId;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long commenterId;
 }

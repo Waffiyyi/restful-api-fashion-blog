@@ -15,5 +15,6 @@ public interface DesignRepository extends JpaRepository<Design, Long> {
     @Query("SELECT d FROM Design d WHERE d.lastActivity >= :oneWeekAgo ORDER BY d.likesCount DESC")
     List<Design> findTrendingDesigns(@Param("oneWeekAgo") LocalDateTime oneWeekAgo);
     List<Design> findTop10ByCategoryInOrderByLikesCountDesc(Set<Category> categories);
+    List<Design> findAllByCategory(Category category);
 
 }

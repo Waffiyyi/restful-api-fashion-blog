@@ -3,6 +3,7 @@ package com.waffiyyi.fashion.blog.entities;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
@@ -31,9 +32,11 @@ public class User {
        joinColumns = @JoinColumn(name = "user_id"),
        inverseJoinColumns = @JoinColumn(name = "follower_id")
     )
+    @EqualsAndHashCode.Exclude
     private Set<User> followers = new HashSet<>();
 
     @ManyToMany(mappedBy = "followers")
+    @EqualsAndHashCode.Exclude
     private Set<User> following = new HashSet<>();
     @ManyToMany
     @JoinTable(
@@ -41,5 +44,9 @@ public class User {
        joinColumns = @JoinColumn(name = "user_id"),
        inverseJoinColumns = @JoinColumn(name = "design_id")
     )
+    @EqualsAndHashCode.Exclude
     private Set<Design> likedDesigns = new HashSet<>();
+    private Long followerCount = 0L;
+    private Long followingCount = 0L;
+
 }

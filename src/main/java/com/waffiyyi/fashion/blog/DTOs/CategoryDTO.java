@@ -9,5 +9,6 @@ public class CategoryDTO {
     private Long id;
     private String name;
     private String description;
+    @Schema(accessMode = Schema.AccessMode.READ_ONLY)
     private Long categoryCreatorId;
 }

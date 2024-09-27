@@ -7,6 +7,7 @@ import com.waffiyyi.fashion.blog.entities.User;
 import com.waffiyyi.fashion.blog.exception.ResourceNotFoundException;
 import com.waffiyyi.fashion.blog.exception.UnAuthorizedException;
 import com.waffiyyi.fashion.blog.repositories.CategoryRepository;
+import com.waffiyyi.fashion.blog.repositories.DesignRepository;
 import com.waffiyyi.fashion.blog.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,32 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
   private final CategoryRepository categoryRepository;
+  private final DesignRepository designRepository;
 
   @Override
   public CategoryDTO saveCategory(CategoryDTO categoryDTO, User user) {
     Category category = convertToEntity(categoryDTO, user);
+    Category savedCategory = categoryRepository.save(category);
+    return convertToDto(savedCategory);
+  }
+
+  @Override
+  public CategoryDTO updateCategory(CategoryDTO categoryDTO, Long categoryId, User user) {
+    Category category =
+       categoryRepository.findById(categoryId).orElseThrow(
+          () -> new ResourceNotFoundException("Category not found",
+                                              HttpStatus.NOT_FOUND));
+    if (!Objects.equals(user.getId(), category.getCreator().getId())) {
+      throw new UnAuthorizedException("You are not authorized to update a category you " +
+                                         "don't own",
+                                      HttpStatus.UNAUTHORIZED);
+    }
+    if (categoryDTO.getName() != null) {
+      category.setName(categoryDTO.getName());
+    }
+    if (categoryDTO.getDescription() != null) {
+      category.setDescription(categoryDTO.getDescription());
+    }
     Category savedCategory = categoryRepository.save(category);
     return convertToDto(savedCategory);
   }
@@ -42,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
   public List<CategoryDTO> getAllCategory() {
     List<Category> categories = categoryRepository.findAll();
     List<CategoryDTO> categoryDTOList = new ArrayList<>();
-    for(Category category: categories){
+    for (Category category : categories) {
       categoryDTOList.add(convertToDto(category));
     }
     return categoryDTOList;
@@ -59,13 +82,20 @@ public class CategoryServiceImpl implements CategoryService {
                                          "don't own",
                                       HttpStatus.UNAUTHORIZED);
     }
+    List<Design> designs = designRepository.findAllByCategory(category);
+
+    for (Design design : designs) {
+      design.setCategory(null);
+    }
+    designRepository.saveAll(designs);
     categoryRepository.deleteById(categoryId);
   }
 
   private CategoryDTO convertToDto(Category category) {
     CategoryDTO categoryDTO = new CategoryDTO();
+    categoryDTO.setId(category.getId());
     categoryDTO.setName(category.getName());
-    categoryDTO.setDescription(categoryDTO.getDescription());
+    categoryDTO.setDescription(category.getDescription());
     categoryDTO.setCategoryCreatorId(category.getCreator().getId());
     return categoryDTO;
   }

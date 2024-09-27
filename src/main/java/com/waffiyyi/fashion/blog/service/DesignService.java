@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface DesignService {
   DesignDTO saveDesign(DesignDTO designDTO, User user);
+  DesignDTO updateDesign(DesignDTO designDTO, Long designId, User user);
 
   DesignDTO findDesignById(Long designId);
 

@@ -1,9 +1,6 @@
 package com.waffiyyi.fashion.blog.service.serviceImpl;
 
-import com.waffiyyi.fashion.blog.DTOs.AuthResponse;
-import com.waffiyyi.fashion.blog.DTOs.DesignDTO;
-import com.waffiyyi.fashion.blog.DTOs.LoginDTO;
-import com.waffiyyi.fashion.blog.DTOs.UserDTO;
+import com.waffiyyi.fashion.blog.DTOs.*;
 import com.waffiyyi.fashion.blog.entities.Category;
 import com.waffiyyi.fashion.blog.entities.Design;
 import com.waffiyyi.fashion.blog.entities.User;
@@ -31,6 +28,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -45,7 +43,7 @@ public class UserServiceImpl implements UserService {
 
 
   @Override
-  public ResponseEntity<AuthResponse> register(User user) {
+  public ResponseEntity<AuthResponse> register(AuthRequestDTO user) {
     if (!EmailValidator.isValid(user.getEmail())) {
       throw new BadRequestException("Invalid email format", HttpStatus.BAD_REQUEST);
     }
@@ -67,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
     }
     user.setPassword(passwordEncoder.encode(user.getPassword()));
-    User savedUser = userRepository.save(user);
+    User savedUser = userRepository.save(convertToUser(user));
     UserDetails userDetails = customUserDetailsService.loadUserByUsername(
        savedUser.getEmail());
 
@@ -128,26 +126,48 @@ public class UserServiceImpl implements UserService {
   @Override
   @Transactional
   public String followUser(User user, Long followerId) {
+    User userToFollow = userRepository.findById(followerId)
+                           .orElseThrow(() -> new UserNotFoundException("User not found",
+                                                                        HttpStatus.NOT_FOUND));
+    if (Objects.equals(userToFollow.getId(), user.getId())) {
+      throw new BadRequestException("You cant follow yourself", HttpStatus.BAD_REQUEST);
+    }
+    if(user.getFollowing().contains(userToFollow)){
+      throw new BadRequestException("Already following user", HttpStatus.BAD_REQUEST);
+    }
 
-
-    User follower = userRepository.findById(followerId)
-                       .orElseThrow(() -> new UserNotFoundException("Follower not found",
-                                                                    HttpStatus.NOT_FOUND));
-
-    user.getFollowers().add(follower);
+    userToFollow.getFollowers().add(user);
+    userToFollow.setFollowerCount(userToFollow.getFollowerCount() + 1);
+    userRepository.save(userToFollow);
+    user.getFollowing().add(userToFollow);
+    user.setFollowingCount(user.getFollowingCount() + 1);
     userRepository.save(user);
     return "Successfully followed user";
   }
 
 
   @Override
-  public Set<UserDTO> viewFollowers(User user) {
+  public Set<ViewFollowerResponseDTO> viewFollowers(User user) {
     return user.getFollowers().stream()
-              .map(follower -> new UserDTO(
-                 follower.getId(),
+              .map(follower -> new ViewFollowerResponseDTO(
                  follower.getFirstName(),
                  follower.getLastName(),
-                 follower.getProfilePicture()
+                 follower.getProfilePicture(),
+                 follower.getGender(),
+                 follower.getEmail()
+              ))
+              .collect(Collectors.toSet());
+  }
+
+  @Override
+  public Set<ViewFollowerResponseDTO> viewFollowing(User user) {
+    return user.getFollowing().stream()
+              .map(following -> new ViewFollowerResponseDTO(
+                 following.getFirstName(),
+                 following.getLastName(),
+                 following.getProfilePicture(),
+                 following.getGender(),
+                 following.getEmail()
               ))
               .collect(Collectors.toSet());
   }
@@ -193,15 +213,64 @@ public class UserServiceImpl implements UserService {
               .collect(Collectors.toList());
   }
 
+  @Override
+  public UserDTO viewProfile(User user) {
+    return convertToUserDto(user);
+  }
+
+  @Override
+  public UserDTO updateProfile(UserDTO userDTO, User user) {
+    if (userDTO.getProfilePicture() != null) {
+      user.setProfilePicture(userDTO.getProfilePicture());
+    }
+    if (userDTO.getFirstName() != null) {
+      user.setFirstName(userDTO.getFirstName());
+    }
+    if (userDTO.getLastName() != null) {
+      user.setLastName(userDTO.getLastName());
+    }
+    userRepository.save(user);
+    return convertToUserDto(user);
+  }
+
 
   private DesignDTO convertToDto(Design design) {
     DesignDTO dto = new DesignDTO();
     dto.setId(design.getId());
     dto.setName(design.getName());
     dto.setDescription(design.getDescription());
-    dto.setCategory(design.getCategory().getId());
+    if (design.getCategory() != null) {
+      dto.setCategoryId(design.getCategory().getId());
+    } else {
+      dto.setCategoryId(null);
+
+    }
     dto.setLikesCount(design.getLikesCount());
     dto.setOwnerId(design.getDesignOwner().getId());
     return dto;
+  }
+
+  private User convertToUser(AuthRequestDTO authRequestDTO) {
+    User user = new User();
+    user.setEmail(authRequestDTO.getEmail());
+    user.setGender(authRequestDTO.getGender());
+    user.setFirstName(authRequestDTO.getFirstName());
+    user.setLastName(authRequestDTO.getLastName());
+    user.setPassword(authRequestDTO.getPassword());
+    user.setProfilePicture(authRequestDTO.getProfilePicture());
+    return user;
+  }
+
+  private UserDTO convertToUserDto(User user) {
+    UserDTO userDTO = new UserDTO();
+    userDTO.setId(user.getId());
+    userDTO.setEmail(user.getEmail());
+    userDTO.setGender(user.getGender());
+    userDTO.setFirstName(user.getFirstName());
+    userDTO.setLastName(user.getLastName());
+    userDTO.setProfilePicture(user.getProfilePicture());
+    userDTO.setFollowerCount(user.getFollowerCount());
+    userDTO.setFollowingCount(user.getFollowingCount());
+    return userDTO;
   }
 }
