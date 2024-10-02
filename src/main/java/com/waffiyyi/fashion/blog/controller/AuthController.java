@@ -40,7 +40,7 @@ public class AuthController {
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @PostMapping("/signup")
-  public ResponseEntity<AuthResponse> createCategory(@RequestBody AuthRequestDTO user) {
+  public ResponseEntity<AuthResponse> signup(@RequestBody AuthRequestDTO user) {
     return userService.register(user);
   }
 

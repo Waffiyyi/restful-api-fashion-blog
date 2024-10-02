@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Configuration;
 
 ),
                    servers = {
-                      @Server(url = "http://3.87.194.116",
+                      @Server(url = "https://restful-api-fashion-blog.onrender.com",
                               description = "Production Server"),
 
                       @Server(url = "http://localhost:8070",
