@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 
 @OpenAPIDefinition(info = @Info(title = "Fashion Bolg API", version = "1.0.0",
                                 description = "Fashion Bolg using RESTful API",
-                                termsOfService = "Waffiyyi",
+                                termsOfService = "#",
                                 contact = @Contact(name = "Mr Waffiyyi",
                                                    email = "fasholawafiyyi@gmail.com",
                                                    url = "https://waffiyyi-fashola.vercel.app"),
@@ -23,21 +23,19 @@ import org.springframework.context.annotation.Configuration;
 
 ),
                    servers = {
-                      @Server(url = "https://restful-api-fashion-blog.onrender.com",
-                              description = "Production Server"),
+                     @Server(url = "https://restful-api-fashion-blog.onrender.com",
+                             description = "Production Server"),
 
-                      @Server(url = "http://localhost:8070",
-                              description = "Local Server")
-                   },
-                   security = {@io.swagger.v3.oas.annotations.security.SecurityRequirement(
-                      name = "bearerAuth", scopes = {"read", "write"})})
+                     @Server(url = "http://localhost:8070",
+                             description = "Local Server")
+                   })
 @Configuration
 public class SwaggerConfig {
-  @Bean
-  public OpenAPI customOpenAPI() {
-    return new OpenAPI().addSecurityItem(
-       new SecurityRequirement().addList("bearerAuth")).components(
-       new Components().addSecuritySchemes("bearerAuth", new SecurityScheme().type(
+   @Bean
+   public OpenAPI customOpenAPI() {
+      return new OpenAPI().addSecurityItem(
+        new SecurityRequirement().addList("bearerAuth")).components(
+        new Components().addSecuritySchemes("bearerAuth", new SecurityScheme().type(
           SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
-  }
+   }
 }
