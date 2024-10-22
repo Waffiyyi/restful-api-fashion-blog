@@ -17,8 +17,9 @@ import org.springframework.context.annotation.Configuration;
                                 description = "Fashion Bolg using RESTful API",
                                 termsOfService = "Waffiyyi",
                                 contact = @Contact(name = "Mr Waffiyyi",
-                                                   email = "fasholawafiyyi@gmail.com"),
-                                license = @License(name = "licence", url = "https://waffiyyi-fashola.vercel.app")
+                                                   email = "fasholawafiyyi@gmail.com",
+                                                   url = "https://waffiyyi-fashola.vercel.app"),
+                                license = @License(name = "licence", url = "#")
 
 ),
                    servers = {
