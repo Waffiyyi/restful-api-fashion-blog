@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
                                 termsOfService = "Waffiyyi",
                                 contact = @Contact(name = "Mr Waffiyyi",
                                                    email = "fasholawafiyyi@gmail.com"),
-                                license = @License(name = "licence", url = "waffiyyi")
+                                license = @License(name = "licence", url = "https://waffiyyi-fashola.vercel.app")
 
 ),
                    servers = {
