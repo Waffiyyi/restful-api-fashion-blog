@@ -21,8 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Tag(name = "Design", description = "This controller manages Design operations")
-@OpenAPIDefinition(info = @Info(title = "DESIGN CONTROLLER", version = "1.0",
-                                description = "DESIGN SERVICE API documentation"))
+
 @RestController
 @RequestMapping("api/designs")
 @RequiredArgsConstructor

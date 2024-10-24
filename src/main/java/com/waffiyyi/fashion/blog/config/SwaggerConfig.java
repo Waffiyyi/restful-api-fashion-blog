@@ -1,14 +1,16 @@
 package com.waffiyyi.fashion.blog.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.security.SecurityRequirement;
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -28,14 +30,17 @@ import org.springframework.context.annotation.Configuration;
 
                      @Server(url = "http://localhost:8070",
                              description = "Local Server")
-                   })
-@Configuration
+                   },
+                   security = @SecurityRequirement(name = "bearerAuth")
+
+)
+@SecurityScheme(
+  name = "bearerAuth",
+  description = "JWT Auth",
+  scheme = "bearer",
+  type = SecuritySchemeType.HTTP,
+  bearerFormat = "JWT",
+  in = SecuritySchemeIn.HEADER
+)
 public class SwaggerConfig {
-   @Bean
-   public OpenAPI customOpenAPI() {
-      return new OpenAPI().addSecurityItem(
-        new SecurityRequirement().addList("bearerAuth")).components(
-        new Components().addSecuritySchemes("bearerAuth", new SecurityScheme().type(
-          SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")));
-   }
 }

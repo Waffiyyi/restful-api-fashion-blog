@@ -23,8 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "Comment", description = "This controller manages Comment operations")
-@OpenAPIDefinition(info = @Info(title = "COMMENT CONTROLLER", version = "1.0",
-                                description = "COMMENT SERVICE API documentation"))
+
 @RestController
 @RequestMapping("api/comments")
 @RequiredArgsConstructor

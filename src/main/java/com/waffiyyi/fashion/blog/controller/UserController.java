@@ -25,8 +25,7 @@ import java.util.List;
 import java.util.Set;
 
 @Tag(name = "User", description = "This controller manages User operations")
-@OpenAPIDefinition(info = @Info(title = "USER CONTROLLER", version = "1.0",
-                                description = "USER SERVICE API documentation"))
+
 @RestController
 @RequestMapping("api/user")
 @RequiredArgsConstructor

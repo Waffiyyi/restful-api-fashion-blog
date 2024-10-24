@@ -23,8 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Tag(name = "Category", description = "This controller manages Category operations")
-@OpenAPIDefinition(info = @Info(title = "CATEGORY CONTROLLER", version = "1.0",
-                                description = "CATEGORY SERVICE API documentation"))
+
 @RestController
 @RequestMapping("api/category")
 @RequiredArgsConstructor
