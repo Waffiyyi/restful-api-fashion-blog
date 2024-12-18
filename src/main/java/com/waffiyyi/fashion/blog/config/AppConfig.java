@@ -31,8 +31,9 @@ public class AppConfig {
   private final JwtTokenValidator jwtTokenValidator;
   private final AuthenticationExceptionHandler authenticationExceptionHandler;
   private final SecurityException securityException;
+   private final CorsConfigurationSource corsConfigurationSource;
 
-  @Bean
+   @Bean
   SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.sessionManagement(management -> management.sessionCreationPolicy(
        SessionCreationPolicy.STATELESS)).authorizeHttpRequests(
@@ -50,7 +51,7 @@ public class AppConfig {
          request.accessDeniedHandler(securityException);
        }).addFilterBefore(jwtTokenValidator, BasicAuthenticationFilter.class).csrf(
           AbstractHttpConfigurer::disable).cors(
-       cors -> cors.configurationSource(corsConfigurationSource()));
+       cors -> cors.configurationSource(corsConfigurationSource));
     return http.build();
   }
 
@@ -60,7 +61,7 @@ public class AppConfig {
       public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
         CorsConfiguration cfg = new CorsConfiguration();
         cfg.setAllowedOrigins(
-           Arrays.asList("http://localhost:5173", "http://localhost:3000"));
+           Arrays.asList("*"));
         cfg.setAllowedMethods(Collections.singletonList("*"));
         cfg.setAllowCredentials(true);
         cfg.setAllowedHeaders(Collections.singletonList("*"));
