@@ -31,6 +31,7 @@ public class AppConfig {
    private final JwtTokenValidator jwtTokenValidator;
    private final AuthenticationExceptionHandler authenticationExceptionHandler;
    private final SecurityException securityException;
+   private final CorsConfigurationSource corsConfigurationSource;
 
 
    @Bean
@@ -52,7 +53,7 @@ public class AppConfig {
              request.accessDeniedHandler(securityException);
           }).addFilterBefore(jwtTokenValidator, BasicAuthenticationFilter.class).csrf(
             AbstractHttpConfigurer::disable)
-          .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+          .cors(cors -> cors.configurationSource(corsConfigurationSource));
       return http.build();
    }
 
