@@ -13,7 +13,10 @@ import com.waffiyyi.fashion.blog.repositories.UserRepository;
 import com.waffiyyi.fashion.blog.service.DesignService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -111,23 +114,12 @@ public class DesignServiceImpl implements DesignService {
          return "Successfully Liked";
       }
    }
-@Override
-   public Page<DesignDTO> getAllDesign(Pageable pageable) {
-      // Fetch all designs from the repository
-      List<DesignDTO> allDesigns = designRepository.findAll()
-                                                   .stream()
-                                                   .map(this::convertToDTO)
-                                                   .toList();
 
-      // Calculate start and end indices for the current page
-      int start = (int) pageable.getOffset();
-      int end = Math.min((start + pageable.getPageSize()), allDesigns.size());
-
-      // Create a sublist for the current page
-      List<DesignDTO> paginatedDesigns = allDesigns.subList(start, end);
-
-      // Return a PageImpl containing the paginated results
-      return new PageImpl<>(paginatedDesigns, pageable, allDesigns.size());
+   @Override
+   public Page<DesignDTO> getAllDesign(int page, int size) {
+      Pageable pageable = PageRequest.of(page, size);
+      Page<Design> designPage = designRepository.findAll(pageable);
+      return designPage.map(this::convertToDTO);
    }
 
 

@@ -103,11 +103,8 @@ public class DesignController {
      @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class)))})
    @GetMapping("/get-all")
-   public ResponseEntity<Page<DesignDTO>> getAllDesign(@RequestParam(defaultValue = "0") int page,
-                                                       @RequestParam(defaultValue = "50")
-                                                       int size) {
-      Pageable pageable = PageRequest.of(page, size);
-      Page<DesignDTO> designDTO = designService.getAllDesign(pageable);
+   public ResponseEntity<Page<DesignDTO>> getAllDesign(@RequestParam int page, @RequestParam int size) {
+      Page<DesignDTO> designDTO = designService.getAllDesign(page, size);
       return ResponseEntity.ok(designDTO);
    }
 

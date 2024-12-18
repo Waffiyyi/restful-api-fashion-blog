@@ -12,7 +12,7 @@ public interface DesignService {
 
    DesignDTO findDesignById(Long designId);
 
-   public Page<DesignDTO> getAllDesign(Pageable pageable);
+   Page<DesignDTO> getAllDesign(int page, int size);
    void deleteDesign(Long designId, User user);
 
    String toggleLikeDesign(Long designId, User user);
