@@ -17,6 +17,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -84,6 +88,25 @@ public class DesignController {
    @GetMapping("/{designId}")
    public ResponseEntity<DesignDTO> getDesignById(@PathVariable Long designId) {
       DesignDTO designDTO = designService.findDesignById(designId);
+      return ResponseEntity.ok(designDTO);
+   }
+
+   @Operation(summary = "Get Design",
+              description = "Used to get all design by page and size")
+   @ApiResponses(value = {
+     @ApiResponse(responseCode = "200", description = "Successful", content =
+     @Content(schema = @Schema(implementation = DesignDTO.class))),
+     @ApiResponse(responseCode = "400", description = "Bad Request", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
+     @ApiResponse(responseCode = "404", description = "No Record Found", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
+   @GetMapping("/get-all")
+   public ResponseEntity<Page<DesignDTO>> getAllDesign(@RequestParam(defaultValue = "0") int page,
+                                                       @RequestParam(defaultValue = "50")
+                                                       int size) {
+      Page<DesignDTO> designDTO = designService.getAllDesign(page, size);
       return ResponseEntity.ok(designDTO);
    }
 
