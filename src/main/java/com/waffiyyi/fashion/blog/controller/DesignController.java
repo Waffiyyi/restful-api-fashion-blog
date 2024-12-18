@@ -106,7 +106,8 @@ public class DesignController {
    public ResponseEntity<Page<DesignDTO>> getAllDesign(@RequestParam(defaultValue = "0") int page,
                                                        @RequestParam(defaultValue = "50")
                                                        int size) {
-      Page<DesignDTO> designDTO = designService.getAllDesign(page, size);
+      Pageable pageable = PageRequest.of(page, size);
+      Page<DesignDTO> designDTO = designService.getAllDesign(pageable);
       return ResponseEntity.ok(designDTO);
    }
 

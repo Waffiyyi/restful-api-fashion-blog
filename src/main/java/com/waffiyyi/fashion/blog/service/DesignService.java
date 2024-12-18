@@ -3,6 +3,7 @@ package com.waffiyyi.fashion.blog.service;
 import com.waffiyyi.fashion.blog.DTOs.DesignDTO;
 import com.waffiyyi.fashion.blog.entities.User;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 
 public interface DesignService {
@@ -11,7 +12,7 @@ public interface DesignService {
 
    DesignDTO findDesignById(Long designId);
 
-   Page<DesignDTO> getAllDesign(int page, int size);
+   public Page<DesignDTO> getAllDesign(Pageable pageable);
    void deleteDesign(Long designId, User user);
 
    String toggleLikeDesign(Long designId, User user);
