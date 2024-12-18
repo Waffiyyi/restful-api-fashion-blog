@@ -42,8 +42,8 @@ public class CommentController {
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
   @PostMapping
   public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO,
                                                   @RequestHeader("Authorization")
@@ -62,8 +62,8 @@ public class CommentController {
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
   @GetMapping("/{commentId}")
   public ResponseEntity<CommentDTO> findCommentById(@PathVariable Long commentId) {
     CommentDTO commentDTO = commentService.findCommentById(commentId);
@@ -78,8 +78,8 @@ public class CommentController {
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
   @GetMapping("/get-all/{designId}")
   public ResponseEntity<List<CommentDTO>> getAllComment(@PathVariable Long designId) {
     List<CommentDTO> commentDTO = commentService.getAllDesignComment(designId);
@@ -94,8 +94,8 @@ public class CommentController {
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
   @DeleteMapping("/{commentId}")
   public ResponseEntity<Void> deleteComment(@PathVariable Long commentId,
                                             @RequestHeader("Authorization")

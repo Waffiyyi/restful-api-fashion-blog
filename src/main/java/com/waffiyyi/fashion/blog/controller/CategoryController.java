@@ -29,98 +29,98 @@ import java.util.List;
 @RequestMapping("api/category")
 @RequiredArgsConstructor
 public class CategoryController {
-  private final CategoryService cacategoryService;
-  private final UserService userService;
+   private final CategoryService cacategoryService;
+   private final UserService userService;
 
-  @Operation(summary = "Create Category", description = "Used to create design category")
-  @ApiResponses(value = {
+   @Operation(summary = "Create Category", description = "Used to create design category")
+   @ApiResponses(value = {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = CategoryDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
-  @PostMapping
-  public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO,
-                                                    @RequestHeader("Authorization")
-                                                    String jwt) {
-    User user = userService.findUserByJWTToken(jwt);
-    CategoryDTO createdCategory = cacategoryService.saveCategory(categoryDTO, user);
-    return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
-  }
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
+   @PostMapping
+   public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO categoryDTO,
+                                                     @RequestHeader("Authorization")
+                                                     String jwt) {
+      User user = userService.findUserByJWTToken(jwt);
+      CategoryDTO createdCategory = cacategoryService.saveCategory(categoryDTO, user);
+      return ResponseEntity.status(HttpStatus.CREATED).body(createdCategory);
+   }
 
-  @Operation(summary = "Update Category", description = "Used to update design category")
-  @ApiResponses(value = {
+   @Operation(summary = "Update Category", description = "Used to update design category")
+   @ApiResponses(value = {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = CategoryDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
-  @PutMapping("/{categoryId}")
-  public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO,
-                                                    @PathVariable Long categoryId,
-                                                    @RequestHeader("Authorization")
-                                                    String jwt) {
-    User user = userService.findUserByJWTToken(jwt);
-    CategoryDTO createdCategory = cacategoryService.updateCategory(categoryDTO,
-                                                                   categoryId, user);
-    return ResponseEntity.status(HttpStatus.OK).body(createdCategory);
-  }
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
+   @PutMapping("/{categoryId}")
+   public ResponseEntity<CategoryDTO> updateCategory(@RequestBody CategoryDTO categoryDTO,
+                                                     @PathVariable Long categoryId,
+                                                     @RequestHeader("Authorization")
+                                                     String jwt) {
+      User user = userService.findUserByJWTToken(jwt);
+      CategoryDTO createdCategory = cacategoryService.updateCategory(categoryDTO,
+                                                                     categoryId, user);
+      return ResponseEntity.status(HttpStatus.OK).body(createdCategory);
+   }
 
-  @Operation(summary = "Get Category",
-             description = "Used to get the Category of the specified ID")
-  @ApiResponses(value = {
+   @Operation(summary = "Get Category",
+              description = "Used to get the Category of the specified ID")
+   @ApiResponses(value = {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = CategoryDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
-  @GetMapping("/{categoryId}")
-  public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long categoryId) {
-    CategoryDTO categoryDTO = cacategoryService.findCategoryById(categoryId);
-    return ResponseEntity.ok(categoryDTO);
-  }
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
+   @GetMapping("/{categoryId}")
+   public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable Long categoryId) {
+      CategoryDTO categoryDTO = cacategoryService.findCategoryById(categoryId);
+      return ResponseEntity.ok(categoryDTO);
+   }
 
-  @Operation(summary = "Get Category", description = "Used to get all available Category")
-  @ApiResponses(value = {
+   @Operation(summary = "Get Category", description = "Used to get all available Category")
+   @ApiResponses(value = {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = CategoryDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
-  @GetMapping("/get-all")
-  public ResponseEntity<List<CategoryDTO>> getAllCategories() {
-    List<CategoryDTO> categoryDTO = cacategoryService.getAllCategory();
-    return ResponseEntity.ok(categoryDTO);
-  }
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
+   @GetMapping("/get-all")
+   public ResponseEntity<List<CategoryDTO>> getAllCategories() {
+      List<CategoryDTO> categoryDTO = cacategoryService.getAllCategory();
+      return ResponseEntity.ok(categoryDTO);
+   }
 
-  @Operation(summary = "Delete Category", description = "Used to delete category")
-  @ApiResponses(value = {
+   @Operation(summary = "Delete Category", description = "Used to delete category")
+   @ApiResponses(value = {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema())),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
-  @DeleteMapping("/{categoryId}")
-  public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId,
-                                             @RequestHeader("Authorization") String jwt) {
-    User user = userService.findUserByJWTToken(jwt);
-    cacategoryService.deleteCategory(categoryId, user);
-    return ResponseEntity.noContent().build();
-  }
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
+   @DeleteMapping("/{categoryId}")
+   public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId,
+                                              @RequestHeader("Authorization") String jwt) {
+      User user = userService.findUserByJWTToken(jwt);
+      cacategoryService.deleteCategory(categoryId, user);
+      return ResponseEntity.noContent().build();
+   }
 
 }

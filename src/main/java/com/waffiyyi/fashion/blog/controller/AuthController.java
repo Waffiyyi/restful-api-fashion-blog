@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,8 @@ public class AuthController {
 
    private final UserService userService;
 
-   @Operation(summary = "Sign Up", description = "Sign Up", security = {})
+   @Operation(summary = "Sign Up", description = "Sign Up",
+              security = @SecurityRequirement(name = ""))
    @ApiResponses(value = {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = AuthResponse.class))),
@@ -38,14 +40,15 @@ public class AuthController {
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-   })
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
+
    @PostMapping("/signup")
    public ResponseEntity<AuthResponse> signup(@RequestBody AuthRequestDTO user) {
       return userService.register(user);
    }
 
-   @Operation(summary = "Login", description = "Login", security = {})
+   @Operation(summary = "Login", description = "Login", security = @SecurityRequirement(name = ""))
    @ApiResponses(value = {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = AuthResponse.class))),
@@ -53,8 +56,8 @@ public class AuthController {
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ErrorResponse.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-   })
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!", content =
+     @Content(schema = @Schema(implementation = ErrorResponse.class)))})
    @PostMapping("/login")
    public ResponseEntity<AuthResponse> login(@RequestBody LoginDTO loginRequest) {
       return userService.loginUser(loginRequest);
