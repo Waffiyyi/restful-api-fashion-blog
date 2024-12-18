@@ -27,24 +27,10 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AuthController {
 
-  private final UserService userService;
-  @Operation(summary = "Sign Up", description = "Sign Up")
-  @ApiResponses(value = {
-     @ApiResponse(responseCode = "200", description = "Successful", content =
-     @Content(schema = @Schema(implementation = AuthResponse.class))),
-     @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
-     @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
-     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
-  @PostMapping("/signup")
-  public ResponseEntity<AuthResponse> signup(@RequestBody AuthRequestDTO user) {
-    return userService.register(user);
-  }
+   private final UserService userService;
 
-  @Operation(summary = "Login", description = "Login")
-  @ApiResponses(value = {
+   @Operation(summary = "Sign Up", description = "Sign Up", security = {})
+   @ApiResponses(value = {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = AuthResponse.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
@@ -52,10 +38,25 @@ public class AuthController {
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
      @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
-  })
-  @PostMapping("/login")
-  public ResponseEntity<AuthResponse> login(@RequestBody LoginDTO loginRequest) {
-    return userService.loginUser(loginRequest);
-  }
+   })
+   @PostMapping("/signup")
+   public ResponseEntity<AuthResponse> signup(@RequestBody AuthRequestDTO user) {
+      return userService.register(user);
+   }
+
+   @Operation(summary = "Login", description = "Login", security = {})
+   @ApiResponses(value = {
+     @ApiResponse(responseCode = "200", description = "Successful", content =
+     @Content(schema = @Schema(implementation = AuthResponse.class))),
+     @ApiResponse(responseCode = "400", description = "Bad Request", content =
+     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @ApiResponse(responseCode = "404", description = "No Record Found", content =
+     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @ApiResponse(responseCode = "500", description = "Internal Server Error!")
+   })
+   @PostMapping("/login")
+   public ResponseEntity<AuthResponse> login(@RequestBody LoginDTO loginRequest) {
+      return userService.loginUser(loginRequest);
+   }
 
 }
