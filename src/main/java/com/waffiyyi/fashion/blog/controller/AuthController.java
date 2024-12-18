@@ -2,6 +2,7 @@ package com.waffiyyi.fashion.blog.controller;
 
 import com.waffiyyi.fashion.blog.DTOs.AuthRequestDTO;
 import com.waffiyyi.fashion.blog.DTOs.AuthResponse;
+import com.waffiyyi.fashion.blog.DTOs.ErrorResponse;
 import com.waffiyyi.fashion.blog.DTOs.LoginDTO;
 import com.waffiyyi.fashion.blog.entities.User;
 import com.waffiyyi.fashion.blog.exception.BadRequestException;
@@ -34,9 +35,9 @@ public class AuthController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = AuthResponse.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
    })
    @PostMapping("/signup")
@@ -49,9 +50,9 @@ public class AuthController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = AuthResponse.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
    })
    @PostMapping("/login")

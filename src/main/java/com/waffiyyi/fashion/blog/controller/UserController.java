@@ -2,6 +2,7 @@ package com.waffiyyi.fashion.blog.controller;
 
 
 import com.waffiyyi.fashion.blog.DTOs.DesignDTO;
+import com.waffiyyi.fashion.blog.DTOs.ErrorResponse;
 import com.waffiyyi.fashion.blog.DTOs.UserDTO;
 import com.waffiyyi.fashion.blog.DTOs.ViewFollowerResponseDTO;
 import com.waffiyyi.fashion.blog.entities.User;
@@ -37,9 +38,9 @@ public class UserController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = String.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @PostMapping("/follow-user")
@@ -55,9 +56,9 @@ public class UserController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = UserDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @GetMapping("/view-followers")
@@ -72,9 +73,9 @@ public class UserController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = UserDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @GetMapping("/view-following")
@@ -90,9 +91,9 @@ public class UserController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = DesignDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @PostMapping("/get-recommendations")
@@ -108,9 +109,9 @@ public class UserController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = DesignDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @PostMapping("/view-popular-design")
@@ -125,9 +126,9 @@ public class UserController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = DesignDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @PostMapping("/view-trending-design")
@@ -142,9 +143,9 @@ public class UserController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = UserDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @PostMapping("/view-profile")
@@ -160,9 +161,9 @@ public class UserController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = UserDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @PutMapping("/update-profile")

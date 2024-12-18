@@ -2,6 +2,7 @@ package com.waffiyyi.fashion.blog.controller;
 
 import com.waffiyyi.fashion.blog.DTOs.CategoryDTO;
 import com.waffiyyi.fashion.blog.DTOs.CommentDTO;
+import com.waffiyyi.fashion.blog.DTOs.ErrorResponse;
 import com.waffiyyi.fashion.blog.entities.User;
 import com.waffiyyi.fashion.blog.exception.BadRequestException;
 import com.waffiyyi.fashion.blog.exception.ResourceNotFoundException;
@@ -38,9 +39,9 @@ public class CommentController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = CommentDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @PostMapping
@@ -58,9 +59,9 @@ public class CommentController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = CommentDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @GetMapping("/{commentId}")
@@ -74,9 +75,9 @@ public class CommentController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema(implementation = CommentDTO.class))),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @GetMapping("/get-all/{designId}")
@@ -90,9 +91,9 @@ public class CommentController {
      @ApiResponse(responseCode = "200", description = "Successful", content =
      @Content(schema = @Schema())),
      @ApiResponse(responseCode = "400", description = "Bad Request", content =
-     @Content(schema = @Schema(implementation = BadRequestException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "404", description = "No Record Found", content =
-     @Content(schema = @Schema(implementation = ResourceNotFoundException.class))),
+     @Content(schema = @Schema(implementation = ErrorResponse.class))),
      @ApiResponse(responseCode = "500", description = "Internal Server Error!")
   })
   @DeleteMapping("/{commentId}")
